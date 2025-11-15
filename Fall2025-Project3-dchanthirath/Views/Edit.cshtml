@@ -1,0 +1,65 @@
+@model Fall2025_Project3_dchanthirath.ViewModels.MovieEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Movie";
+}
+
+<h1>Edit @Model.Title</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <h4>Current Poster</h4>
+        @if (Model.ExistingPoster != null)
+        {
+            var base64 = Convert.ToBase64String(Model.ExistingPoster);
+            var imgSrc = $"data:image/jpeg;base64,{base64}";
+            <img src="@imgSrc" class="img-fluid rounded" alt="@Model.Title Poster" />
+        }
+        else
+        {
+            <div class="poster-placeholder">No Poster</div>
+        }
+    </div>
+    <div class="col-md-8">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="ImdbHyperlink" class="control-label"></label>
+                <input asp-for="ImdbHyperlink" class="form-control" />
+                <span asp-validation-for="ImdbHyperlink" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Genre" class="control-label"></label>
+                <input asp-for="Genre" class="form-control" />
+                <span asp-validation-for="Genre" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="NewPoster" class="control-label"></label>
+                <input asp-for="NewPoster" class="form-control" type="file" />
+                <span asp-validation-for="NewPoster" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

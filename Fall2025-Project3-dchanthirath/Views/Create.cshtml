@@ -1,0 +1,51 @@
+@model Fall2025_Project3_dchanthirath.ViewModels.MovieCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Movie";
+}
+
+<h1>Create Movie</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <!-- Add enctype for file uploads -->
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="ImdbHyperlink" class="control-label"></label>
+                <input asp-for="ImdbHyperlink" class="form-control" />
+                <span asp-validation-for="ImdbHyperlink" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Genre" class="control-label"></label>
+                <input asp-for="Genre" class="form-control" />
+                <span asp-validation-for="Genre" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Poster" class="control-label"></label>
+                <input asp-for="Poster" class="form-control" type="file" />
+                <span asp-validation-for="Poster" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

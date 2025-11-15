@@ -1,0 +1,76 @@
+@model Fall2025_Project3_dchanthirath.ViewModels.MovieDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Movie.Title;
+}
+
+<div class="row">
+    <div class="col-md-4">
+        @if (Model.Movie.Poster != null)
+        {
+            var base64 = Convert.ToBase64String(Model.Movie.Poster);
+            var imgSrc = $"data:image/jpeg;base64,{base64}";
+            <img src="@imgSrc" class="img-fluid rounded" alt="@Model.Movie.Title Poster" />
+        }
+        else
+        {
+            <div class="poster-placeholder">No Poster</div>
+        }
+    </div>
+    <div class="col-md-8">
+        <h1>@Model.Movie.Title <span class="text-muted">(@Model.Movie.Year)</span></h1>
+        <p><strong>Genre:</strong> @Model.Movie.Genre</p>
+        <p><a href="@Model.Movie.ImdbHyperlink" target="_blank">View on IMDb</a></p>
+
+        <hr />
+
+        <h4>Actors in this Movie</h4>
+        @if (Model.ActorsInMovie.Any())
+        {
+            <ul>
+                @foreach (var actor in Model.ActorsInMovie)
+                {
+                    <li><a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.Id">@actor.Name</a></li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No actors listed for this movie.</p>
+        }
+    </div>
+</div>
+
+<hr />
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>AI-Generated Reviews</h3>
+        <h4>Overall Sentiment: <span class="badge @(Model.OverallSentimentLabel == "Positive" ? "bg-success" : (Model.OverallSentimentLabel == "Negative" ? "bg-danger" : "bg-secondary"))">@Model.OverallSentimentLabel (@Model.OverallSentimentScore.ToString("F2"))</span></h4>
+
+        <table class="table table-bordered table-striped mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Review</th>
+                    <th>Sentiment</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var review in Model.Reviews)
+                {
+                    <tr>
+                        <td>@review.ReviewText</td>
+                        <td class="@(review.SentimentLabel == "Positive" ? "text-success" : (review.SentimentLabel == "Negative" ? "text-danger" : "text-muted"))">
+                            @review.SentimentLabel (@review.SentimentScore.ToString("F2"))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Movie.Id" class="btn btn-primary">Edit</a> |
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>
