@@ -1,8 +1,31 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="px-4 py-5 my-5 text-center rounded-3" style="background-color: #343a40;">
+    <h1 class="display-4 fw-bold text-white">Welcome to Movie AI Manager</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4 text-light">
+            Discover, manage, and get AI-powered insights for your favorite movies and actors.
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a asp-controller="Movies" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-3">Browse Movies</a>
+            <a asp-controller="Actors" asp-action="Index" class="btn btn-outline-info btn-lg px-4">Browse Actors</a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 text-center">
+    <div class="col-md-4">
+        <h2>Manage Movies</h2>
+        <p>Create, edit, and delete movie entries. See AI-generated reviews and sentiment analysis for each film.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Track Actors</h2>
+        <p>Keep a database of actors, their info, and see what the AI "Twitter-verse" is saying about them.</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Link Roles</h2>
+        <p>Easily manage the relationships between actors and the movies they've starred in.</p>
+    </div>
 </div>

@@ -10,12 +10,12 @@ html {
 }
 
 html {
-    position: relative;
+/*    position: relative;*/
     min-height: 100%;
 }
 
 body {
-    margin-bottom: 60px;
+/*    margin-bottom: 60px;*/
     background-color: #212529; /* Dark background */
     color: #dee2e6; /* Light text */
 }
@@ -133,4 +133,33 @@ thead.table-dark {
 
 .badge.bg-secondary {
     color: #fff !important;
+}
+
+/* Make navbar pop a bit more */
+.navbar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+    /* Make nav links glow on hover */
+    .navbar .nav-link.text-light:hover {
+        color: #0dcaf0 !important; /* Use your info color */
+        transform: scale(1.05);
+        transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+/* Make cards (like on the new home page) pop on hover */
+.card {
+    border: 1px solid #454d55;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+/* Give your brand a bit more style */
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: .5px;
 }
