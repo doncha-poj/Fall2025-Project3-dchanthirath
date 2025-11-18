@@ -1,0 +1,42 @@
+﻿@model Fall2025_Project3_dchanthirath.ViewModels.ActorMovieVM
+
+@{
+    ViewData["Title"] = "Create Role";
+}
+
+<h1 class="text-light">Create a New Role</h1>
+<hr />
+<div class="row text-light">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class_s-form-group">
+                <label class="control-label">Actor</label>
+                <select asp-for="ActorMovie.ActorId" class="form-control" asp-items="Model.Actors">
+                    <option value="">-- Select Actor --</option>
+                </select>
+                <span asp-validation-for="ActorMovie.ActorId" class="text-danger"></span>
+            </div>
+
+            <div class_s-form-group mt-3">
+                <label class="control-label">Movie</label>
+                <select asp-for="ActorMovie.MovieId" class="form-control" asp-items="Model.Movies">
+                    <option value="">-- Select Movie --</option>
+                </select>
+                <span asp-validation-for="ActorMovie.MovieId" class="text-danger"></span>
+            </div>
+
+            <div class_s-form-group mt-4">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

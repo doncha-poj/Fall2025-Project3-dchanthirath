@@ -1,7 +1,6 @@
-﻿using Fall2025_Project3_dchanthirath.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fall2025_Project3_dchanthirath.ViewModels
+namespace Fall2025_Project3_dchanthirath.Models
 {
     // A helper class for the Details page
     public class ReviewSentiment

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Fall2025_Project3_dchanthirath.Data;
 using Fall2025_Project3_dchanthirath.Models;
-using Fall2025_Project3_dchanthirath.ViewModels;
 using Fall2025_Project3_dchanthirath.Services;
 using VaderSharp2;
 using Microsoft.AspNetCore.Authorization;
