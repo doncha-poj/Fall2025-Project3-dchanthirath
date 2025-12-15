@@ -18,8 +18,4 @@
     <PackageReference Include="VaderSharp2" Version="3.3.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Movies\" />
-  </ItemGroup>
-
 </Project>

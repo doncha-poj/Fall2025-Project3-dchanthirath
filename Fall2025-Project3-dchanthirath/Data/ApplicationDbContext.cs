@@ -11,16 +11,15 @@ namespace Fall2025_Project3_dchanthirath.Data
         {
         }
 
-        // Add your models as DbSets
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Actor> Actors { get; set; }
-        public DbSet<ActorMovie> ActorMovies { get; set; }
+        public DbSet<ActorMovie> ActorMovies { get; set; } // The Join Table
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Configure the many-to-many relationship
+            // Configure the many-to-many relationship keys
             builder.Entity<ActorMovie>()
                 .HasOne(am => am.Actor)
                 .WithMany(a => a.ActorMovies)
