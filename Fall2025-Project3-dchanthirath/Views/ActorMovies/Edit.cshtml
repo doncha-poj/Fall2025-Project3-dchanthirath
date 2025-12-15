@@ -1,36 +1,33 @@
 ﻿@model Fall2025_Project3_dchanthirath.ViewModels.ActorMovieVM
 
 @{
-    ViewData["Title"] = "Link Actor to Movie";
+    ViewData["Title"] = "Edit Role";
 }
 
-<h1>Link Actor to Movie</h1>
+<h1>Edit Role</h1>
 
-<h4>Create New Role</h4>
+<h4>Edit Relationship</h4>
 <hr />
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ActorMovie.Id" />
 
             <div class="form-group mb-3">
-                <label class="control-label">Select Actor</label>
-                <select asp-for="ActorMovie.ActorId" class="form-control" asp-items="Model.Actors">
-                    <option value="">-- Select Actor --</option>
-                </select>
+                <label class="control-label">Actor</label>
+                <select asp-for="ActorMovie.ActorId" class="form-control" asp-items="Model.Actors"></select>
                 <span asp-validation-for="ActorMovie.ActorId" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
-                <label class="control-label">Select Movie</label>
-                <select asp-for="ActorMovie.MovieId" class="form-control" asp-items="Model.Movies">
-                    <option value="">-- Select Movie --</option>
-                </select>
+                <label class="control-label">Movie</label>
+                <select asp-for="ActorMovie.MovieId" class="form-control" asp-items="Model.Movies"></select>
                 <span asp-validation-for="ActorMovie.MovieId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create Link" class="btn btn-primary" />
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
             </div>
         </form>

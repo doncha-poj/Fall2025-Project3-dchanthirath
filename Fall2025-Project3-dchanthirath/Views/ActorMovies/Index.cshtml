@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@model IEnumerable<Fall2025_Project3_dchanthirath.Models.ActorMovie>
+
+@{
+    ViewData["Title"] = "Actor Roles";
+}
+
+<h1>Actor Roles</h1>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Link Actor to Movie</a>
+    </p>
+}
+
+<table class="table table-striped table-hover" id="RoleTable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Actor)</th>
+            <th>@Html.DisplayNameFor(model => model.Movie)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.Actor != null)
+                    {
+                        <a asp-controller="Actors" asp-action="Details" asp-route-id="@item.ActorId">
+                            @Html.DisplayFor(modelItem => item.Actor.Name)
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Unknown Actor</span>
+                    }
+                </td>
+                <td>
+                    @if (item.Movie != null)
+                    {
+                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.MovieId">
+                            @Html.DisplayFor(modelItem => item.Movie.Title)
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Unknown Movie</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#RoleTable').DataTable();
+        });
+    </script>
+}

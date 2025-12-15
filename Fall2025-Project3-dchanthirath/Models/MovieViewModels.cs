@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Fall2025_Project3_dchanthirath.Models;
 
 namespace Fall2025_Project3_dchanthirath.Models
 {
-    // A helper class for the Details page
+    // Helper class for the Review table
     public class ReviewSentiment
     {
         public string ReviewText { get; set; }
@@ -11,64 +10,45 @@ namespace Fall2025_Project3_dchanthirath.Models
         public string SentimentLabel { get; set; }
     }
 
-    // ViewModel for the Movie Details page
+    // ViewModel for the Details page
     public class MovieDetailsViewModel
     {
         public Movie Movie { get; set; }
+
+        // Requirement: Table columns for Reviews and Sentiment
         public List<ReviewSentiment> Reviews { get; set; } = new List<ReviewSentiment>();
+
+        // Requirement: Heading with average overall sentiment
         public double OverallSentimentScore { get; set; }
         public string OverallSentimentLabel { get; set; }
 
-        // This is the correct property name we will use in the View
+        // Requirement: List of actors in the movie
         public List<Actor> ActorsInMovie { get; set; } = new List<Actor>();
     }
 
-    // ViewModel for the Movie Create page
+    // ViewModel for Create/Edit (Standard)
     public class MovieCreateViewModel
     {
         [Required]
         [StringLength(100)]
         public string Title { get; set; }
 
-        [Display(Name = "IMDb Link")]
         [Url]
         public string ImdbHyperlink { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string Genre { get; set; }
 
         [Range(1888, 2030)]
         public int Year { get; set; }
 
-        [Display(Name = "Movie Poster")]
         public IFormFile? Poster { get; set; }
     }
 
-    // ViewModel for the Movie Edit page
-    public class MovieEditViewModel
+    public class MovieEditViewModel : MovieCreateViewModel
     {
         public int Id { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string Title { get; set; }
-
-        [Display(Name = "IMDb Link")]
-        [Url]
-        public string ImdbHyperlink { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Genre { get; set; }
-
-        [Range(1888, 2030)]
-        public int Year { get; set; }
-
-        [Display(Name = "New Movie Poster")]
-        public IFormFile? NewPoster { get; set; }
-
-        // To display the existing poster
         public byte[]? ExistingPoster { get; set; }
+        public IFormFile? NewPoster { get; set; }
     }
 }

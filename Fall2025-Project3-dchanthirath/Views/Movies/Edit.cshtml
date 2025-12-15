@@ -1,57 +1,67 @@
-@model MovieEditViewModel
+@model Fall2025_Project3_dchanthirath.Models.MovieEditViewModel
 
 @{
     ViewData["Title"] = "Edit Movie";
 }
 
-<h1>Edit @Model.Title</h1>
+<h1>Edit Movie</h1>
+
+<h4>@Model.Title</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <h4>Current Poster</h4>
-        @if (Model.ExistingPoster != null)
-        {
-            var base64 = Convert.ToBase64String(Model.ExistingPoster);
-            var imgSrc = $"data:image/jpeg;base64,{base64}";
-            <img src="@imgSrc" class="img-fluid rounded" alt="@Model.Title Poster" />
-        }
-        else
-        {
-            <div class="poster-placeholder">No Poster</div>
-        }
-    </div>
-    <div class="col-md-8">
+    <div class="col-md-6">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            @* We need to keep the existing poster ID/data if not replacing *@
+            <input type="hidden" asp-for="ExistingPoster" />
 
             <div class="form-group mb-3">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="ImdbHyperlink" class="control-label"></label>
-                <input asp-for="ImdbHyperlink" class="form-control" />
-                <span asp-validation-for="ImdbHyperlink" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Genre" class="control-label"></label>
-                <input asp-for="Genre" class="form-control" />
-                <span asp-validation-for="Genre" class="text-danger"></span>
-            </div>
+
             <div class="form-group mb-3">
                 <label asp-for="Year" class="control-label"></label>
                 <input asp-for="Year" class="form-control" />
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
+
             <div class="form-group mb-3">
-                <label asp-for="NewPoster" class="control-label"></label>
-                <input asp-for="NewPoster" class="form-control" type="file" />
+                <label asp-for="Genre" class="control-label"></label>
+                <input asp-for="Genre" class="form-control" />
+                <span asp-validation-for="Genre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ImdbHyperlink" class="control-label"></label>
+                <input asp-for="ImdbHyperlink" class="form-control" />
+                <span asp-validation-for="ImdbHyperlink" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="control-label">Current Poster</label>
+                <div class="mb-2">
+                    @if (Model.ExistingPoster != null && Model.ExistingPoster.Length > 0)
+                    {
+                        var base64 = Convert.ToBase64String(Model.ExistingPoster);
+                        var imgSrc = $"data:image/jpeg;base64,{base64}";
+                        <img src="@imgSrc" style="max-height: 100px;" class="rounded border" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">No poster uploaded</span>
+                    }
+                </div>
+
+                <label asp-for="NewPoster" class="control-label">Replace Poster (Optional)</label>
+                <input asp-for="NewPoster" type="file" class="form-control" accept="image/*" />
                 <span asp-validation-for="NewPoster" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
             </div>
         </form>

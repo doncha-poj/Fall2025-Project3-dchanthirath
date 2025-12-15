@@ -10,21 +10,24 @@ namespace Fall2025_Project3_dchanthirath.Models
         [StringLength(100)]
         public string Title { get; set; }
 
+        [Required]
         [Display(Name = "IMDb Link")]
-        [Url]
+        [Url] // Ensures it validates as a URL
         public string ImdbHyperlink { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Genre { get; set; }
 
+        [Display(Name = "Year of Release")]
         [Range(1888, 2030)]
         public int Year { get; set; }
 
-        // This stores the image in the database
+        // Requirement: Poster stored as byte[] in db
+        [Display(Name = "Poster")]
         public byte[]? Poster { get; set; }
 
-        // Navigation property for the many-to-many relationship
+        // Navigation property for the list of actors
         public virtual ICollection<ActorMovie> ActorMovies { get; set; } = new List<ActorMovie>();
     }
 }

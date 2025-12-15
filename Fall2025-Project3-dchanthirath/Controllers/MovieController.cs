@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Fall2025_Project3_dchanthirath.Data;
 using Fall2025_Project3_dchanthirath.Models;
 using Fall2025_Project3_dchanthirath.Services;
-using VaderSharp2;
+using VaderSharp2; // Requirement: Sentiment Analysis
 using Microsoft.AspNetCore.Authorization;
 
 namespace Fall2025_Project3_dchanthirath.Controllers
 {
-    [Authorize] // Require users to be logged in for all movie actions
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -38,41 +38,51 @@ namespace Fall2025_Project3_dchanthirath.Controllers
 
             if (movie == null) return NotFound();
 
-            // 1. Generate AI Reviews
+            // --- Requirement: Call AI and Sentiment Analysis APIs ---
+
+            // 1. Get AI Reviews (One API Call)
             var reviews = await _openAiService.GetMovieReviewsAsync(movie.Title);
 
-            // 2. Analyze Sentiment
+            // 2. Analyze Sentiment using VaderSharp2
             var analyzer = new SentimentIntensityAnalyzer();
-            var viewModel = new MovieDetailsViewModel
-            {
-                Movie = movie,
-                ActorsInMovie = movie.ActorMovies.Select(am => am.Actor).ToList()
-            };
-
+            var reviewSentiments = new List<ReviewSentiment>();
             double totalScore = 0;
-            foreach (var reviewText in reviews)
+
+            foreach (var review in reviews)
             {
-                var sentiment = analyzer.PolarityScores(reviewText);
-                totalScore += sentiment.Compound;
-                viewModel.Reviews.Add(new ReviewSentiment
+                var sentimentResults = analyzer.PolarityScores(review);
+                var score = sentimentResults.Compound;
+
+                totalScore += score;
+
+                reviewSentiments.Add(new ReviewSentiment
                 {
-                    ReviewText = reviewText,
-                    SentimentScore = sentiment.Compound,
-                    SentimentLabel = GetSentimentLabel(sentiment.Compound)
+                    ReviewText = review,
+                    SentimentScore = score,
+                    SentimentLabel = GetSentimentLabel(score)
                 });
             }
 
-            // 3. Calculate Average Sentiment
-            viewModel.OverallSentimentScore = reviews.Any() ? totalScore / reviews.Count : 0;
-            viewModel.OverallSentimentLabel = GetSentimentLabel(viewModel.OverallSentimentScore);
+            // 3. Calculate Average
+            double averageScore = reviews.Any() ? totalScore / reviews.Count : 0;
+
+            // 4. Prepare ViewModel
+            var viewModel = new MovieDetailsViewModel
+            {
+                Movie = movie,
+                ActorsInMovie = movie.ActorMovies.Select(am => am.Actor).ToList(), // Requirement: List of actors
+                Reviews = reviewSentiments, // Requirement: Table data
+                OverallSentimentScore = averageScore,
+                OverallSentimentLabel = GetSentimentLabel(averageScore) // Requirement: Heading data
+            };
 
             return View(viewModel);
         }
 
         private string GetSentimentLabel(double score)
         {
-            if (score > 0.05) return "Positive";
-            if (score < -0.05) return "Negative";
+            if (score >= 0.05) return "Positive";
+            if (score <= -0.05) return "Negative";
             return "Neutral";
         }
 
@@ -97,7 +107,6 @@ namespace Fall2025_Project3_dchanthirath.Controllers
                     Year = vm.Year
                 };
 
-                // Handle file upload
                 if (vm.Poster != null && vm.Poster.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
@@ -154,7 +163,6 @@ namespace Fall2025_Project3_dchanthirath.Controllers
                     movieToUpdate.Genre = vm.Genre;
                     movieToUpdate.Year = vm.Year;
 
-                    // Handle new file upload
                     if (vm.NewPoster != null && vm.NewPoster.Length > 0)
                     {
                         using (var memoryStream = new MemoryStream())
@@ -182,8 +190,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
         {
             if (id == null) return NotFound();
 
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
             if (movie == null) return NotFound();
 
             return View(movie);
@@ -197,7 +204,12 @@ namespace Fall2025_Project3_dchanthirath.Controllers
             var movie = await _context.Movies.FindAsync(id);
             if (movie != null)
             {
-                // This will also remove related ActorMovie entries
+                // Clean up relationships first if necessary, 
+                // though Cascade Delete usually handles this in many setups.
+                // Explicitly including related data to be safe:
+                var actorMovies = _context.ActorMovies.Where(am => am.MovieId == id);
+                _context.ActorMovies.RemoveRange(actorMovies);
+
                 _context.Movies.Remove(movie);
             }
 
