@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Fall2025_Project3_dchanthirath.Models;
 
 namespace Fall2025_Project3_dchanthirath.Models
 {
@@ -17,6 +18,8 @@ namespace Fall2025_Project3_dchanthirath.Models
         public List<ReviewSentiment> Reviews { get; set; } = new List<ReviewSentiment>();
         public double OverallSentimentScore { get; set; }
         public string OverallSentimentLabel { get; set; }
+
+        // This is the correct property name we will use in the View
         public List<Actor> ActorsInMovie { get; set; } = new List<Actor>();
     }
 

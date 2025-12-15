@@ -20,7 +20,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
         public async Task<IActionResult> Index()
         {
             // Eager load the related Actor and Movie data
-            var actorMovies = _context.ActorMovie
+            var actorMovies = _context.ActorMovies
                                       .Include(am => am.Actor)
                                       .Include(am => am.Movie);
 
@@ -34,12 +34,12 @@ namespace Fall2025_Project3_dchanthirath.Controllers
             var viewModel = new ActorMovieVM
             {
                 ActorMovie = new ActorMovie(),
-                Actors = _context.Actor.Select(a => new SelectListItem
+                Actors = _context.Actors.Select(a => new SelectListItem
                 {
                     Value = a.Id.ToString(),
                     Text = a.Name
                 }).ToList(),
-                Movies = _context.Movie.Select(m => new SelectListItem
+                Movies = _context.Movies.Select(m => new SelectListItem
                 {
                     Value = m.Id.ToString(),
                     Text = m.Title
@@ -63,12 +63,12 @@ namespace Fall2025_Project3_dchanthirath.Controllers
             }
 
             // If the model is invalid, we must re-populate the dropdowns
-            viewModel.Actors = _context.Actor.Select(a => new SelectListItem
+            viewModel.Actors = _context.Actors.Select(a => new SelectListItem
             {
                 Value = a.Id.ToString(),
                 Text = a.Name
             }).ToList();
-            viewModel.Movies = _context.Movie.Select(m => new SelectListItem
+            viewModel.Movies = _context.Movies.Select(m => new SelectListItem
             {
                 Value = m.Id.ToString(),
                 Text = m.Title

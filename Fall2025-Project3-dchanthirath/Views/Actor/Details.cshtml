@@ -4,13 +4,15 @@
     ViewData["Title"] = Model.Actor.Name;
 }
 
+<h1>@ViewData["Title"]</h1>
+
 <div class="row">
-    <div class="col-md-4 text-center">
+    <div class="col-md-4">
         @if (Model.Actor.Photo != null)
         {
             var base64 = Convert.ToBase64String(Model.Actor.Photo);
             var imgSrc = $"data:image/jpeg;base64,{base64}";
-            <img src="@imgSrc" class="img-fluid rounded mb-3" alt="@Model.Actor.Name" />
+            <img src="@imgSrc" class="img-fluid rounded" style="max-height: 300px;" alt="@Model.Actor.Name" />
         }
         else
         {
@@ -18,68 +20,103 @@
         }
     </div>
     <div class="col-md-8">
-        <h1>@Model.Actor.Name</h1>
-        <p><strong>Age:</strong> @Model.Actor.Age</p>
-        <p><strong>Gender:</strong> @Model.Actor.Gender</p>
-        <p>
-            <a href="@Model.Actor.ImdbHyperlink" target="_blank" class="btn btn-outline-primary btn-sm">View on IMDb</a>
-        </p>
-
+        <h4>Actor Details</h4>
         <hr />
-        <h4>Movies With This Actor</h4>
-        @if (Model.MoviesWithActor.Any())
-        {
-            <ul class="list-group list-group-flush">
-                @foreach (var movie in Model.MoviesWithActor)
-                {
-                    <li class="list-group-item">
-                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">@movie.Title</a> (@movie.Year)
-                    </li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p class="text-muted">No movies linked to this actor yet.</p>
-        }
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Actor.Name)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Actor.Name)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Actor.BirthDate)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Actor.BirthDate)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Actor.Age)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Actor.Age)
+            </dd>
+
+            <dt class="col-sm-3">
+                IMDb
+            </dt>
+            <dd class="col-sm-9">
+                <a href="@Model.Actor.ImdbHyperlink" target="_blank">View Profile</a>
+            </dd>
+        </dl>
     </div>
 </div>
 
-<hr class="my-4" />
+<hr />
 
-<div class="row">
-    <div class="col-12">
-        <h3>AI "Twitter-verse" Reactions</h3>
-        <h4>
-            Overall Sentiment:
-            <span class="badge @(Model.OverallSentimentLabel == "Positive" ? "bg-success" : (Model.OverallSentimentLabel == "Negative" ? "bg-danger" : "bg-secondary"))">
-                @Model.OverallSentimentLabel (@Model.OverallSentimentScore.ToString("F2"))
-            </span>
-        </h4>
-
-        <table class="table table-bordered table-striped mt-3">
-            <thead class="table-dark">
+@if (Model.MoviesWithActor != null && Model.MoviesWithActor.Any())
+{
+    <h2>Filmography</h2>
+    <table class="table table-striped" id="MovieTable">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* FIX: Iterating over Movie objects directly *@
+            @foreach (var movie in Model.MoviesWithActor)
+            {
                 <tr>
-                    <th>Tweet</th>
-                    <th style="width: 200px;">Sentiment</th>
+                    <td>
+                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">@movie.Title</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => movie.Year)
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var tweet in Model.Tweets)
-                {
-                    <tr>
-                        <td>@tweet.TweetText</td>
-                        <td class="@(tweet.SentimentLabel == "Positive" ? "text-success" : (tweet.SentimentLabel == "Negative" ? "text-danger" : "text-muted"))">
-                            @tweet.SentimentLabel (@tweet.SentimentScore.ToString("F2"))
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No movies linked to this actor.</p>
+}
+
+<hr />
+
+<div>
+    <h3>AI "Twitter-verse" Reactions</h3>
+    <h4>Overall Sentiment: @Model.OverallSentimentLabel (@Model.OverallSentimentScore.ToString("F2"))</h4>
+    <table class="table table-bordered" id="TweetTable">
+        <thead>
+            <tr>
+                <th>Tweet</th>
+                <th>Sentiment</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tweet in Model.Tweets)
+            {
+                <tr>
+                    <td>@tweet.TweetText</td>
+                    <td class="@(tweet.SentimentLabel == "Positive" ? "text-success" : (tweet.SentimentLabel == "Negative" ? "text-danger" : "text-muted"))">
+                        @tweet.SentimentLabel (@tweet.SentimentScore.ToString("F2"))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 <div class="mt-3">
-    <a asp-action="Edit" asp-route-id="@Model.Actor.Id" class="btn btn-primary">Edit</a> |
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Actor.Id" class="btn btn-primary">Edit</a> <span>|</span>
+    }
     <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
 </div>

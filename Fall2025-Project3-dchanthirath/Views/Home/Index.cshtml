@@ -8,9 +8,28 @@
         <p class="lead mb-4 text-light">
             Discover, manage, and get AI-powered insights for your favorite movies and actors.
         </p>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a asp-controller="Movies" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-3">Browse Movies</a>
-            <a asp-controller="Actors" asp-action="Index" class="btn btn-outline-info btn-lg px-4">Browse Actors</a>
+
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center flex-column align-items-center">
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                @* User IS logged in: Show the main feature buttons *@
+                <div class="d-flex gap-2 justify-content-center">
+                    <a asp-controller="Movies" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-3">Browse Movies</a>
+                    <a asp-controller="Actors" asp-action="Index" class="btn btn-outline-info btn-lg px-4">Browse Actors</a>
+                </div>
+            }
+            else
+            {
+                @* User is NOT logged in: Show message and login/register buttons *@
+                <div class="alert alert-warning w-100" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    You must be logged in to manage movies and view AI insights.
+                </div>
+                <div class="d-flex gap-2 justify-content-center">
+                    <a class="btn btn-primary btn-lg px-4 gap-3" asp-area="Identity" asp-page="/Account/Login">Log In</a>
+                    <a class="btn btn-outline-light btn-lg px-4" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                </div>
+            }
         </div>
     </div>
 </div>

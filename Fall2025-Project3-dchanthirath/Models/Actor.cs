@@ -21,6 +21,10 @@ namespace Fall2025_Project3_dchanthirath.Models
         [Url]
         public string ImdbHyperlink { get; set; }
 
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Birth")]
+        public DateTime BirthDate { get; set; }
+
         // This stores the image in the database
         public byte[]? Photo { get; set; }
 

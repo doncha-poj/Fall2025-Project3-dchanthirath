@@ -9,7 +9,7 @@
         public int MovieId { get; set; }
 
         // Navigation properties
-        public virtual Actor Actor { get; set; }
-        public virtual Movie Movie { get; set; }
+        public virtual Actor? Actor { get; set; }
+        public virtual Movie? Movie { get; set; }
     }
 }

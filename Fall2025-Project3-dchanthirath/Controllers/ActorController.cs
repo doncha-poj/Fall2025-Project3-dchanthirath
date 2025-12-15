@@ -23,7 +23,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
         // GET: Actors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Actor.ToListAsync());
+            return View(await _context.Actors.ToListAsync());
         }
 
         // GET: Actors/Details/5
@@ -31,7 +31,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
         {
             if (id == null) return NotFound();
 
-            var actor = await _context.Actor
+            var actor = await _context.Actors
                 .Include(a => a.ActorMovies)
                 .ThenInclude(am => am.Movie)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -112,7 +112,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
         {
             if (id == null) return NotFound();
 
-            var actor = await _context.Actor.FindAsync(id);
+            var actor = await _context.Actors.FindAsync(id);
             if (actor == null) return NotFound();
             return View(actor);
         }
@@ -129,7 +129,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
                 try
                 {
                     // Fetch existing actor to preserve photo if not replaced
-                    var existingActor = await _context.Actor.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+                    var existingActor = await _context.Actors.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
 
                     if (NewPhoto != null && NewPhoto.Length > 0)
                     {
@@ -150,7 +150,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_context.Actor.Any(e => e.Id == actor.Id)) return NotFound();
+                    if (!_context.Actors.Any(e => e.Id == actor.Id)) return NotFound();
                     else throw;
                 }
                 return RedirectToAction(nameof(Index));
@@ -163,7 +163,7 @@ namespace Fall2025_Project3_dchanthirath.Controllers
         {
             if (id == null) return NotFound();
 
-            var actor = await _context.Actor.FirstOrDefaultAsync(m => m.Id == id);
+            var actor = await _context.Actors.FirstOrDefaultAsync(m => m.Id == id);
             if (actor == null) return NotFound();
 
             return View(actor);
@@ -174,10 +174,10 @@ namespace Fall2025_Project3_dchanthirath.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var actor = await _context.Actor.FindAsync(id);
+            var actor = await _context.Actors.FindAsync(id);
             if (actor != null)
             {
-                _context.Actor.Remove(actor);
+                _context.Actors.Remove(actor);
             }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
