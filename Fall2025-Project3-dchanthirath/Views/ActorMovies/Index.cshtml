@@ -11,64 +11,124 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <p>
-        <a asp-action="Create" class="btn btn-primary">Link Actor to Movie</a>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Link Actor to Movie
+        </a>
     </p>
 }
 
-<table class="table table-striped table-hover" id="RoleTable">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Actor)</th>
-            <th>@Html.DisplayNameFor(model => model.Movie)</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @if (item.Actor != null)
-                    {
-                        <a asp-controller="Actors" asp-action="Details" asp-route-id="@item.ActorId">
-                            @Html.DisplayFor(modelItem => item.Actor.Name)
-                        </a>
-                    }
-                    else
-                    {
-                        <span class="text-danger">Unknown Actor</span>
-                    }
-                </td>
-                <td>
-                    @if (item.Movie != null)
-                    {
-                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.MovieId">
-                            @Html.DisplayFor(modelItem => item.Movie.Title)
-                        </a>
-                    }
-                    else
-                    {
-                        <span class="text-danger">Unknown Movie</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <table class="table table-hover align-middle" id="MovieTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Actor</th>
+                    <th>Movie</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (item.Actor != null)
+                            {
+                                <div class="d-flex align-items-center">
+                                    @* Display Actor Photo if available *@
+                                    <div class="me-3" style="width: 50px; height: 50px;">
+                                        @if (item.Actor.Photo != null && item.Actor.Photo.Length > 0)
+                                        {
+                                            var base64 = Convert.ToBase64String(item.Actor.Photo);
+                                            var imgSrc = $"data:image/jpeg;base64,{base64}";
+                                            <img src="@imgSrc" class="rounded-circle border"
+                                                 style="width: 50px; height: 50px; object-fit: cover;"
+                                                 alt="@item.Actor.Name" />
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white"
+                                                 style="width: 50px; height: 50px;">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                        }
+                                    </div>
 
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                    <a asp-controller="Actors" asp-action="Details" asp-route-id="@item.ActorId" class="text-decoration-none fw-bold">
+                                        @Html.DisplayFor(modelItem => item.Actor.Name)
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Unknown Actor</span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.Movie != null)
+                            {
+                                <div class="d-flex align-items-center">
+                                    @* Display Movie Poster if available *@
+                                    <div class="me-3" style="width: 40px; height: 60px;">
+                                        @if (item.Movie.Poster != null && item.Movie.Poster.Length > 0)
+                                        {
+                                            var base64 = Convert.ToBase64String(item.Movie.Poster);
+                                            var imgSrc = $"data:image/jpeg;base64,{base64}";
+                                            <img src="@imgSrc" class="rounded shadow-sm"
+                                                 style="width: 40px; height: 60px; object-fit: cover;"
+                                                 alt="@item.Movie.Title" />
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light border d-flex align-items-center justify-content-center text-muted"
+                                                 style="width: 40px; height: 60px;">
+                                                <i class="bi bi-film"></i>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.MovieId" class="text-decoration-none">
+                                        @Html.DisplayFor(modelItem => item.Movie.Title)
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Unknown Movie</span>
+                            }
+                        </td>
+
+                        <td class="align-middle text-end">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="View Details">
+                                <i class="bi bi-eye-fill"></i> <span class="d-none d-md-inline">Details</span>
+                            </a>
+
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <i class="bi bi-pencil-square"></i> <span class="d-none d-md-inline">Edit</span>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#RoleTable').DataTable();
+            $('#RoleTable').DataTable({
+                "columnDefs": [
+                    { "orderable": false, "targets": [0, 1] } // Optional: Prevent sorting by image HTML if it causes issues
+                ]
+            });
         });
     </script>
 }

@@ -15,9 +15,10 @@ html {
 }
 
 body {
-/*    margin-bottom: 60px;*/
+    /*    margin-bottom: 60px;*/
     background-color: #212529; /* Dark background */
     color: #dee2e6; /* Light text */
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Navbar */
@@ -162,4 +163,21 @@ thead.table-dark {
 .navbar-brand {
     font-weight: 600;
     letter-spacing: .5px;
+}
+
+/* Smooth transition for images */
+img.rounded, img.shadow-sm {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    /* Zoom effect on hover */
+    img.rounded:hover, img.shadow-sm:hover {
+        transform: scale(1.05); /* Grow by 5% */
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+        cursor: pointer;
+    }
+
+/* Custom Navbar Gradient (Optional) */
+.navbar {
+    background: linear-gradient(90deg, #1c1c1c 0%, #343a40 100%);
 }

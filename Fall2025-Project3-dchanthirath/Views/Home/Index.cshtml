@@ -34,17 +34,38 @@
     </div>
 </div>
 
-<div class="row g-4 text-center">
-    <div class="col-md-4">
-        <h2>Manage Movies</h2>
-        <p>Create, edit, and delete movie entries. See AI-generated reviews and sentiment analysis for each film.</p>
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+    <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-dark flex-shrink-0 me-3 rounded-3 p-3">
+            <i class="bi bi-film fs-3"></i>
+        </div>
+        <div>
+            <h2>Manage Movies</h2>
+            <p>Curate your library. Upload posters, set release years, and track genres with our intuitive database.</p>
+            <a asp-controller="Movies" asp-action="Index" class="btn btn-primary">
+                Browse Movies
+            </a>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Track Actors</h2>
-        <p>Keep a database of actors, their info, and see what the AI "Twitter-verse" is saying about them.</p>
+    <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-dark flex-shrink-0 me-3 rounded-3 p-3">
+            <i class="bi bi-people-fill fs-3"></i>
+        </div>
+        <div>
+            <h2>Track Actors</h2>
+            <p>Build profiles for your favorite stars. Link them to movies and view their filmography instantly.</p>
+            <a asp-controller="Actors" asp-action="Index" class="btn btn-primary">
+                Browse Actors
+            </a>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Link Roles</h2>
-        <p>Easily manage the relationships between actors and the movies they've starred in.</p>
+    <div class="col d-flex align-items-start">
+        <div class="icon-square bg-light text-dark flex-shrink-0 me-3 rounded-3 p-3">
+            <i class="bi bi-robot fs-3"></i>
+        </div>
+        <div>
+            <h2>AI Insights</h2>
+            <p>Leverage the power of OpenAI to generate fictional reviews and analyze sentiment automatically.</p>
+        </div>
     </div>
 </div>
